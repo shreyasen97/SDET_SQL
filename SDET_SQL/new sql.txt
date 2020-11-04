@@ -1,0 +1,79 @@
+SQL HANDS ON
+
+1)Select * from employee 
+  where HireDate<(Select Hiredate from manager where manager.mid==employee.mid);
+
+2)Select * from employee 
+  where salary>(select salary from employee where ename='blakes');
+
+3)Select * from employee 
+  where dept_no=10 and salary>(select salary from employee where ename='allen');
+
+4)Select * from managers 
+ where Hiredate<(select hiredate from managers where ename='king') and
+ Hiredate>(select hiredate from managers where ename='smith');
+
+5)Select e.empno,e.ename,d.loc,e.sal,d.dname from employee e, department d 
+  where e.dno=d.dno and dno=(select d_no from employee where ename='king');
+
+6)Select * from employee e,salgrade s 
+  where s.salgrade >(select grade from employee where ename='miller');
+
+7)select * from employee e ,department d,salgrade s 
+  where e.deptno= d.deptno and d.loc in ('dallas','chicago')  
+  and (s.grade in (select s.grade from employee e,salgrade s where  e.ename = 'adams') 
+  or months_between (sysdate,hiredate) > (select months_between(sysdate,hiredate) from emp where ename = 'smith')) ; 
+
+8)select * from employee em 
+  where sal in (select sal from employee e where e.ename in ('ford','blake')and em.empno == e.empno); 
+
+9) A) Select * from employee where sal in (select sal from employee where designation='clerk');
+   B) Select * from employee where sal in ( select sal from employee where to_char(hiredate,'YYYY') < 1982);
+   C) Select * from employee where sal+comm in(select sal+cmm from emp e,dept d where e.deptno=d.deptno and 
+	d.dname = 'sales'and e.job = 'salesman'); 
+   D) Select * from employee where sal in ( select sal from emp4 where grade=4);
+   E) Select * from employee where sal in ( Select sal from emp5);
+
+10)select * from employee 
+   where hiredate in (select max(hiredate) from employee where deptno = 30);
+
+11) select * from employee 
+    where sal = ( select max(sal) from employee e,department d where e.deptno =d.deptno and 
+    d.loc = 'chicago' and hiredate <(select max(hiredate) from employee e ,salgrade s where s.grade = 2))
+
+12) select * from employee 
+    where sal in (select max(sal) from employee where empno in (select empno from employee where ename = 'king')); 
+
+13) Select empno,ename,deptno,loc from employee;
+
+14)select e.empno,e.ename,e.deptno,d.loc,d.dname from employee e ,department d 
+   where e.deptno = d.deptno and e.deptno in (10,20); 
+
+15)select e.empno,e.ename,e.deptno,e.sal,d.loc from employee e ,department d 
+   where e.deptno = d.deptno and d.loc in ('chicago','dallas')and e.exp> 6 ; 
+
+16) select e.empno,e.ename,e.deptno,e.sal,d.loc from employee e ,department d 
+    where e.deptno = d.deptno and d.loc in ('new york','dallas')and 
+    to_char(e.hiredate,'YYYY') = '1981' and e.sal between 2000 and 5000; 
+
+17) select e.empno,e.ename,e.sal,s.grade from employee, salesgrade;
+
+18) select * from employee 
+    where  empno in (select empno from employee e,salgrade s, department d 
+    where e.dno=d.dno and  d.loc='chicago' and s.grade in (2,3)); 
+
+19) select e.deptno,e.empno,e.ename,e.sal,d.dname,d.loc,s.grade from employee e,salgrade s,department d
+    where e.deptno = d.deptno and s.grade in (3,5) and ( d.dname = 'accounting' or d.loc in ('dallas','chicago'))
+    and ((months_between(sysdate,hiredate))/12) > 6;
+
+20)select e.ename from employee e ,department d,salgrade s
+   where e.deptno = d.deptno and d.dname in ('Research','operation') 
+   and e.ename not in ('miller','allen') and to_char(hiredate,'YYYY') >1987; 
+
+21) select * from employee where designation = (select designation from emp where ename ='smith');
+
+22)select * from employee where hiredate <(select hiredate from emp whereename = miller);
+
+23)select * from employee 
+   where designation = (select designation from emp where ename = 'allen')
+   or sal > (select sal from emp where ename = 'allen'); 
